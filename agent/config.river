@@ -1,0 +1,25 @@
+logging {
+    level  = "info"
+    format = "logfmt"
+}
+
+otelcol.receiver.otlp "tempo" {
+    http {
+        endpoint = "0.0.0.0:4318"
+    }
+    
+    output {
+        traces  = [otelcol.exporter.otlphttp.tempo.input]
+    }
+}
+
+otelcol.exporter.otlphttp "tempo" {
+    client {
+        endpoint = "http://tempo:4318"
+        tls {
+            insecure             = true
+            insecure_skip_verify = true
+        }
+    }
+}
+
